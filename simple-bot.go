@@ -17,10 +17,10 @@ var (
 	threemaID o3.ThreemaID
 	tr        o3.ThreemaRest
 	sc        o3.SessionContext
-	pass    = []byte{0x1, 0x2, 0x3, 0x4}
-	idpath  = "threema.id"
-	abpath  = "address.book"
-	nick    = "UTFE"
+	pass      = []byte{0x1, 0x2, 0x3, 0x4}
+	idpath    = "threema.id"
+	abpath    = "address.book"
+	nickpath  = "nick.txt"
 )
 
 func cleanup() {
@@ -55,9 +55,14 @@ func main(){
 		}
 	}
 
-	fmt.Println("Starting bot: "+threemaID.String())
-	fmt.Printf("QR: 3mid:%s,%s\n",threemaID.String(),hex.EncodeToString(threemaID.GetPubKey()[:]))
-	threemaID.Nick = o3.NewPubNick(nick)
+	fmt.Print("Starting bot: "+threemaID.String())
+	if rawnick, err := ioutil.ReadFile(nickpath); err == nil{
+		nick := strings.TrimSpace(string(rawnick))
+		threemaID.Nick = o3.NewPubNick(nick)
+		fmt.Printf("(%s)", nick)
+	}
+	fmt.Println("")
+	fmt.Printf("QR-Code: 3mid:%s,%s\n",threemaID.String(),hex.EncodeToString(threemaID.GetPubKey()[:]))
 
 	sc = o3.NewSessionContext(threemaID)
 
