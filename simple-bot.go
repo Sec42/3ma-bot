@@ -111,12 +111,12 @@ func main(){
 				os.Exit(1)
 			}
 			sendMsgChan <- rm
-			fmt.Fprintf(os.Stderr, "[%16x] read as [%16x]\n", msg.ID(),rm.ID())
+			fmt.Fprintf(os.Stderr, "[%16x] marked as read ([%16x])\n", msg.ID(),rm.ID())
 
 			// Send off to bot
 			words:= strings.Fields(msg.Text())
 			if cmdOut, err = exec.Command("./utfe.bot", words...).Output(); err != nil {
-				fmt.Fprintln(os.Stderr, "There was an error running utfe: ", err,cmdOut)
+				fmt.Fprintln(os.Stderr, "Oops: ", err,cmdOut)
 				if(true){
 					rm, err := o3.NewDeliveryReceiptMessage(&sc, msg.Sender().String(), msg.ID(), o3.MSGDISAPPROVED)
 					if err != nil {
@@ -135,22 +135,23 @@ func main(){
 				}
 				sendMsgChan <- tm
 				fmt.Printf("[%16x] is reply to [%16x] ", tm.ID(),msg.ID())
+				fmt.Printf("%s", string(cmdOut[:]))
 			}
 
 		case o3.DeliveryReceiptMessage:
 			fmt.Printf("[%16x] ",msg.MsgID());
 			if      (msg.Status()== o3.MSGDELIVERED){
-				fmt.Printf("delivered ");
+				fmt.Printf("delivered to ");
 			}else if(msg.Status()==o3.MSGREAD){
-				fmt.Printf("read      ");
+				fmt.Printf("read by      ");
 			}else if(msg.Status()==o3.MSGAPPROVED){
-				fmt.Printf("approve   ");
+				fmt.Printf("approved by  ");
 			}else if(msg.Status()==o3.MSGDISAPPROVED){
-				fmt.Printf("negative  ");
+				fmt.Printf("negative by  ");
 			}else{
 				fmt.Printf("<unk: %x> ",msg.Status());
 			}
-			fmt.Printf("- [%16x] <%s> (%s)\n",msg.ID(), msg.Sender(),msg.PubNick());
+			fmt.Printf("<%s> (%s) ([%16x])\n",msg.ID(), msg.Sender(),msg.PubNick(),msg.ID());
 
 		case o3.TypingNotificationMessage:
 			fmt.Printf("[%16x] <%s> (%s) ",msg.ID(),msg.Sender(),msg.PubNick());
