@@ -151,7 +151,7 @@ func main(){
 			}else{
 				fmt.Printf("<unk: %x> ",msg.Status());
 			}
-			fmt.Printf("<%s> (%s) ([%16x])\n",msg.ID(), msg.Sender(),msg.PubNick(),msg.ID());
+			fmt.Printf("<%s> (%s) ([%16x])\n", msg.Sender(),msg.PubNick(),msg.ID());
 
 		case o3.TypingNotificationMessage:
 			fmt.Printf("[%16x] <%s> (%s) ",msg.ID(),msg.Sender(),msg.PubNick());
