@@ -21,7 +21,7 @@ The addressbook of the people that communicate with your bot will be saved to `a
 
 All incoming text messages will be passed on to a binary `utfe.bot`, and the output will be sent back to the originator.
 
-This `utfe.bot` binary/script is not part of this repo and can be written in any language. Use your own imagination.
+This `utfe.bot` binary/script is not part of this repo and can be written in any language. Use your own imagination, or refer to [utfe](https://github.com/Sec42/utfe)
 
 ### Authentication
 
@@ -29,7 +29,7 @@ On startup, the bot prints the string necessary to create the QR code used for a
 
 To create the QR code you can use: 
 ```
-qrencode -t ANSI 3mid:....
+[qrencode](https://fukuchi.org/works/qrencode/) -t ANSI 3mid:....
 ```
 
 ### Licence
